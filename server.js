@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 const express = require('express');
 const app = express();
 
-const port = 3001; // WebSocket server will run on port 3001
+const port = process.env.PORT || 3001; // Use PORT env variable, default to 3001 for local development
 const wss = new WebSocket.Server({ port });
 
 wss.on('connection', (ws) => {
@@ -11,7 +11,7 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     console.log(`Received message: ${message}`);
 
-    // Broadcast the message to all clients (police)
+    // Broadcast the message to all clients
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(message);
